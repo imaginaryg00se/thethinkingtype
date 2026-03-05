@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function App() {
   const passage = 
@@ -11,6 +11,8 @@ function App() {
 
   const [totalKeyStrokes, setTotalKeyStrokes] = useState(0);
 
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
   // Compare passage with user input and count correct inputs
   const correctChars = passage
     .split("")
@@ -21,6 +23,7 @@ function App() {
     input.length === passage.length && 
     correctChars === passage.length;
 
+  // Timer Feature
   useEffect(() => {
     // Start timer on first character
     if (input.length > 0 && startTime === null) {
@@ -32,6 +35,11 @@ function App() {
       setEndTime(Date.now());
     }
   }, [input.length, isComplete, startTime, endTime]);
+
+  // Input box begins accepting input immediately
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   const elapsedMs = 
     startTime === null ? 0 : (endTime ?? Date.now()) - startTime; 
@@ -47,17 +55,21 @@ function App() {
   const wpm = 
     elapsedMinutes > 0 ? (correctChars / 5) / elapsedMinutes : 0;
 
+  // Reset procedure
   const reset = () => {
     setInput("");
     setStartTime(null);
     setEndTime(null);
     setTotalKeyStrokes(0);
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 0);
   }
 
 
   return (
     <div>
-      <h1>ThinkingType</h1>
+      <h1>The Thinking Type</h1>
       <p>
         {passage.split("").map((char, index) => { 
           let color = "black"; 
@@ -76,12 +88,22 @@ function App() {
       </p>
 
       <input
+        ref={inputRef}
         value={input}
         onChange={(e) => {
           setTotalKeyStrokes((prev) => prev + 1);
-          setInput(e.target.value)}
-        }
+          setInput(e.target.value)
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Tab") {
+            e.preventDefault(); // stops focus from jumping away
+            reset();            
+          }
+        }}
         disabled={isComplete}
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck="false"
       />
 
       {isComplete && <p>Completed</p>}
