@@ -23,6 +23,15 @@ function App() {
     input.length === passage.length && 
     correctChars === passage.length;
 
+  console.log({
+    inputLength: input.length,
+    passageLength: passage.length,
+    correctChars,
+    isComplete,
+    input,
+    passage
+  });
+
   // Timer Feature
   useEffect(() => {
     // Start timer on first character
@@ -68,19 +77,27 @@ function App() {
 
 
   return (
-    <div>
+    <div onClick={() => inputRef.current?.focus()}>
       <h1>The Thinking Type</h1>
-      <p>
+      <p style={{ fontSize: "2rem" }}>
         {passage.split("").map((char, index) => { 
-          let color = "black"; 
+          let color = "gray"; 
 
           if (index < input.length) {
             color = input[index] === char ? "green" : "red"
           };
 
+          const isCurrent = index === input.length;
+          const displayChar = char === " " ? "·" : char;
+
           return (
-            <span key={index} style={{ color }} >
-              {char}
+            <span 
+              key={index} 
+              style={{ 
+                color,
+                textDecoration: isCurrent ? "underline" : "none"
+              }} >
+                {displayChar}
             </span>
           )
           
@@ -104,6 +121,11 @@ function App() {
         autoCorrect="off"
         autoCapitalize="off"
         spellCheck="false"
+        style={{
+          opacity: 0,
+          position: "absolute",
+          pointerEvents: "none",
+        }}
       />
 
       {isComplete && <p>Completed</p>}
