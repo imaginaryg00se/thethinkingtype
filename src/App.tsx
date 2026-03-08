@@ -193,20 +193,51 @@ function App() {
 
       {isComplete && (
         <>
-          <p>Keystroke Accuracy: {accuracy.toFixed(1)}%</p>
-          <p>WPM: {wpm.toFixed(1)}</p>
+          <p
+            style={{
+              fontFamily: "monospace",
+              fontSize: "1rem",
+            }}
+          >
+            Keystroke Accuracy: {accuracy.toFixed(1)}%
+          </p>
+          <p
+            style={{
+              fontFamily: "monospace",
+              fontSize: "1rem",
+            }}
+          >
+            WPM: {wpm.toFixed(1)}
+          </p>
+          <p
+            style={{
+              fontFamily: "monospace",
+              fontSize: "1rem",
+            }}
+          >
+            Time: {elapsedSeconds}s
+          </p>
         </>
       )}
 
-      <p>Time: {elapsedSeconds}s</p>
-
-      <p>
+      <p
+        style={{
+          fontFamily: "monospace",
+          fontSize: "1rem",
+        }}
+      >
         Characters typed: {input.length}/{passage.length}
       </p>
 
-      {isComplete && <button onClick={reset}>Next</button>}
-
-      <p>[Tab] - reset</p>
+      <p
+        style={{
+          fontFamily: "monospace",
+          fontSize: "1rem",
+          opacity: 0.5,
+        }}
+      >
+        [Tab] - reset
+      </p>
     </div>
   );
 }

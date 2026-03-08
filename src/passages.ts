@@ -16,6 +16,7 @@ export const passages = [
     "Happiness cannot be pursued; it ensues",
     "Between stimulus and response is freedom",
 
-    "Ask and it will be given to you, seek and you will find, knock and it will be opened to you.",
-    "We are not determined by our experiences, but the meaning we give them is self-determining"
+    "Ask and it will be given to you, seek and you will find, knock and it will be opened to you",
+    "We are not determined by our experiences, but the meaning we give them is self-determining",
+    "Work hard for not what you will get, but for who you will become"
     ];
