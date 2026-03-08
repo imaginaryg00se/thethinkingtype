@@ -88,8 +88,22 @@ function App() {
       }
 
       if (isBlockedSpace) {
-        displayChar = blockedChar!;
-        color = "red";
+        return (
+          <span key={index} style={{ position: "relative" }}>
+            {/* Invisible space that holds the layout space */}
+            <span style={{ color: "transparent" }}> </span>
+            {/* Wrong character rendered on top, doesn't affect layout */}
+            <span
+              style={{
+                position: "absolute",
+                left: 0,
+                color: "red",
+              }}
+            >
+              {blockedChar}
+            </span>
+          </span>
+        );
       }
 
       return (
@@ -163,7 +177,16 @@ function App() {
 
   return (
     <div onClick={() => inputRef.current?.focus()}>
-      <h1>The Thinking Type</h1>
+      <h1
+        style={{
+          fontFamily: "monospace",
+          fontSize: "2rem",
+          textAlign: "center",
+          marginBottom: "2rem",
+        }}
+      >
+        The Thinking Type
+      </h1>
 
       <div
         style={{
@@ -179,6 +202,7 @@ function App() {
           fontFamily: "monospace",
           fontKerning: "none",
           fontVariantLigatures: "none",
+          marginBottom: "2rem",
         }}
       >
         <div style={{ position: "relative" }}>
