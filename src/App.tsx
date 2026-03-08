@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { passages } from "./passages";
+import "./App.css";
 
 function getRandomPassageIndex(currentIndex: number | null) {
   if (passages.length === 1) return 0;
@@ -41,9 +42,9 @@ function App() {
       return (
         <span
           key={index}
+          className={isCurrent ? "blinking-caret" : ""}
           style={{
             color,
-            borderBottom: isCurrent ? "2px solid grey" : "none",
           }}
         >
           {char}
