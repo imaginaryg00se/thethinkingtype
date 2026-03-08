@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { passages } from "./passages";
 import "./App.css";
+import { Analytics } from "@vercel/analytics/react";
 
 function getRandomPassageIndex(currentIndex: number | null) {
   if (passages.length === 1) return 0;
@@ -176,97 +177,101 @@ function App() {
   }, [blockedChar, input.length, isComplete, passage, reset, startTime]);
 
   return (
-    <div onClick={() => inputRef.current?.focus()}>
-      <h1
-        style={{
-          fontFamily: "monospace",
-          fontSize: "2rem",
-          textAlign: "center",
-          marginBottom: "2rem",
-        }}
-      >
-        The Thinking Type
-      </h1>
+    <>
+      <div onClick={() => inputRef.current?.focus()}>
+        <h1
+          style={{
+            fontFamily: "monospace",
+            fontSize: "2rem",
+            textAlign: "center",
+            marginBottom: "2rem",
+          }}
+        >
+          The Thinking Type
+        </h1>
 
-      <div
-        style={{
-          maxWidth: "800px",
-          width: "100%",
-          margin: "0 auto",
-          padding: "1rem",
-          textAlign: "center",
-          fontSize: "3rem",
-          lineHeight: 1.5,
-          whiteSpace: "pre-wrap",
-          overflowWrap: "break-word",
-          fontFamily: "monospace",
-          fontKerning: "none",
-          fontVariantLigatures: "none",
-          marginBottom: "2rem",
-        }}
-      >
-        <div style={{ position: "relative" }}>
-          <div
-            style={{
-              color: "gray",
-              whiteSpace: "pre-wrap",
-            }}
-          >
-            {passage}
-          </div>
+        <div
+          style={{
+            maxWidth: "800px",
+            width: "100%",
+            margin: "0 auto",
+            padding: "1rem",
+            textAlign: "center",
+            fontSize: "3rem",
+            lineHeight: 1.5,
+            whiteSpace: "pre-wrap",
+            overflowWrap: "break-word",
+            fontFamily: "monospace",
+            fontKerning: "none",
+            fontVariantLigatures: "none",
+            marginBottom: "2rem",
+          }}
+        >
+          <div style={{ position: "relative" }}>
+            <div
+              style={{
+                color: "gray",
+                whiteSpace: "pre-wrap",
+              }}
+            >
+              {passage}
+            </div>
 
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              whiteSpace: "pre-wrap",
-              pointerEvents: "none",
-            }}
-          >
-            {renderOverlayChars()}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                whiteSpace: "pre-wrap",
+                pointerEvents: "none",
+              }}
+            >
+              {renderOverlayChars()}
+            </div>
           </div>
         </div>
+
+        <input
+          ref={inputRef}
+          value=""
+          readOnly
+          style={{
+            opacity: 0,
+            position: "absolute",
+            pointerEvents: "none",
+          }}
+        />
+
+        {isComplete && (
+          <>
+            <p style={{ fontFamily: "monospace", fontSize: "1rem" }}>
+              Keystroke Accuracy: {accuracy.toFixed(1)}%
+            </p>
+            <p style={{ fontFamily: "monospace", fontSize: "1rem" }}>
+              WPM: {wpm.toFixed(1)}
+            </p>
+            <p style={{ fontFamily: "monospace", fontSize: "1rem" }}>
+              Time: {elapsedSeconds}s
+            </p>
+          </>
+        )}
+
+        <p style={{ fontFamily: "monospace", fontSize: "1rem" }}>
+          Characters typed: {input.length}/{passage.length}
+        </p>
+
+        <p
+          style={{
+            fontFamily: "monospace",
+            fontSize: "1rem",
+            opacity: 0.5,
+          }}
+        >
+          [Tab] - reset
+        </p>
       </div>
 
-      <input
-        ref={inputRef}
-        value=""
-        readOnly
-        style={{
-          opacity: 0,
-          position: "absolute",
-          pointerEvents: "none",
-        }}
-      />
-
-      {isComplete && (
-        <>
-          <p style={{ fontFamily: "monospace", fontSize: "1rem" }}>
-            Keystroke Accuracy: {accuracy.toFixed(1)}%
-          </p>
-          <p style={{ fontFamily: "monospace", fontSize: "1rem" }}>
-            WPM: {wpm.toFixed(1)}
-          </p>
-          <p style={{ fontFamily: "monospace", fontSize: "1rem" }}>
-            Time: {elapsedSeconds}s
-          </p>
-        </>
-      )}
-
-      <p style={{ fontFamily: "monospace", fontSize: "1rem" }}>
-        Characters typed: {input.length}/{passage.length}
-      </p>
-
-      <p
-        style={{
-          fontFamily: "monospace",
-          fontSize: "1rem",
-          opacity: 0.5,
-        }}
-      >
-        [Tab] - reset
-      </p>
-    </div>
+      <Analytics />
+    </>
   );
 }
 
